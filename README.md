@@ -1,6 +1,8 @@
 # js-link-select
 js link select 联动
 
+![img](link-select-img.png)
+
 ```
 // begin core function
 var province = document.getElementById('js_province');
