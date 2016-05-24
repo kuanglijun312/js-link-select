@@ -1,7 +1,12 @@
 # js-link-select
 js link select 联动
 
+
 ![img](link-select-img.png)
+
+数据格式(按需求改相应的代码，如省市区): 
+[{'name':'省份','city':[{'name':'城市','shop':['name':'店面',code:'aaaa']}]}]
+
 
 ```
 // begin core function
