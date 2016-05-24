@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<script type="text/javascript" src="http://ghac.twomi.cn/api_honda/getShop"></script>
+	<title>联动</title>
+</head>
+<body>
+<select name="province" id="js_province">
+</select>
+<select name="city" id="js_city">
+</select>
+<select name="shop" id="js_shop">
+</select>
+
+<button onclick="getShopCode();">获取shop_code</button>
+
+<div>
+根据input的值(shop_code)，设置选择
+<input name="shop_code"  id="js_input_code"/>
+<button onClick="setInputValue();">设置值</button>
+</div>
+
+<h4>结果:</h4>
+<p id="js_result"></p>
+<script type="text/javascript">
+
+// begin core function
+var province = document.getElementById('js_province');
+var city = document.getElementById('js_city');
+var shop = document.getElementById('js_shop');
+
+function initLinkData() {
+	shopList.unshift({"name":"请选择省份","city":[]})
+	for(var p = 0,pl = shopList.length; p < pl; p++) {
+		shopList[p]['city'].unshift({"name":"请选择城市","shop":[]});
+		for(var c=0,cl = shopList[p]['city'].length; c < cl; c++) {
+			shopList[p]['city'][c]['shop'].unshift({"name":"请选择店面","code":''});
+		}
+	}
+}
+
+function renderArea(list,selectedIndex,el) {
+	var html = [];
+	for(var i =0,len=list.length; i < len;i++) {
+		var d = list[i];
+		html.push('<option value="'+(d.code || d.name)+'" '+(selectedIndex == i ? 'selected="selected"' : '')+'>'+d.name+'</option>');
+	}
+	el.innerHTML = html.join('');
+}
+
+//pass last select value
+function setLinkValue(code) {
+	//first find all index;
+	var index = 0,cityindex = 0,shopindex =0,isfind=false;
+	if(code) {
+		for(var p = 0,pl = shopList.length; p < pl; p++) {
+			for(var c=0,cl = shopList[p]['city'].length; c < cl; c++) {
+				for(var s=0,sl=shopList[p]['city'][c]['shop'].length; s<sl;s++) {
+					if(shopList[p]['city'][c]['shop'][s].code == code) {
+						index = p;
+						cityindex = c;
+						shopindex = s;
+						isfind = true;
+						break;
+					}
+				}
+				if(isfind) break;
+			}
+			if(isfind) break;
+		}
+	}
+	renderArea(shopList,index,province);
+	renderArea(shopList[index]['city'],cityindex,city);
+	renderArea(shopList[index]['city'][cityindex]['shop'],shopindex,shop);
+}
+
+province.onchange = function(e) {
+	var index = province.selectedIndex;
+	renderArea(shopList[index]['city'],0,city);
+	renderArea(shopList[index]['city'][0]['shop'],0,shop);
+}
+city.onchange = function(e) {
+	var index = province.selectedIndex;
+	var cityindex = city.selectedIndex;
+	renderArea(shopList[index]['city'][cityindex]['shop'],0,shop);
+}
+
+initLinkData();
+setLinkValue(); //pass none set default; pass existed value ,set value;
+//end core function
+
+//other function
+function getShopCode() {
+	var shopindex = shop.selectedIndex;
+	if(shopindex <= 0) {
+		document.getElementById('js_result').innerHTML = '请选择店面';
+		return;
+	}
+	var index = province.selectedIndex;
+	var cityindex = city.selectedIndex;
+	document.getElementById('js_result').innerHTML = shopList[index]['city'][cityindex]['shop'][shopindex].code;
+}
+
+function setInputValue() {
+	var code = document.getElementById('js_input_code').value;
+	setLinkValue(code);
+}
+
+</script>
+</body>
+</html>
