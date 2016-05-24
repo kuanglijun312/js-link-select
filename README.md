@@ -4,7 +4,7 @@ js link select 联动
 
 ![img](link-select-img.png)
 
-数据格式(按需求改相应的代码，如省市区): 
+数据格式(按需求改相应的代码，如省市区,示例中的店面编码，为随机生成的字符串): 
 [{'name':'省份','city':[{'name':'城市','shop':['name':'店面',code:'aaaa']}]}]
 
 
