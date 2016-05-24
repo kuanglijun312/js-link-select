@@ -1,6 +1,7 @@
 # js-link-select
 js link select 联动
 
+```
 // begin core function
 var province = document.getElementById('js_province');
 var city = document.getElementById('js_city');
@@ -65,3 +66,4 @@ city.onchange = function(e) {
 initLinkData();
 setLinkValue(); //pass none set default; pass existed value ,set value;
 //end core function
+```
